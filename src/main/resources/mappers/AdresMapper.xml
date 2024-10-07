@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Adres.AdresMapper">
+
+    <insert id="save" parameterType="Adres.Adres">
+        INSERT INTO adres (adres_id, straat, huisnummer, postcode, woonplaats, reiziger_id)
+        VALUES (#{id}, #{straat}, #{huisnummer}, #{postcode}, #{woonplaats}, #{reiziger.id});
+    </insert>
+
+    <update id="update" parameterType="Adres.Adres">
+        UPDATE adres
+        SET straat = #{straat},
+            huisnummer = #{huisnummer},
+            postcode = #{postcode},
+            woonplaats = #{woonplaats},
+            reiziger_id = #{reiziger.id}
+        WHERE adres_id = #{id};
+    </update>
+
+    <delete id="delete" parameterType="Adres.Adres">
+        DELETE FROM adres WHERE adres_id = #{id};
+    </delete>
+
+    <select id="findByReiziger" parameterType="Reiziger.Reiziger" resultType="Adres.Adres">
+        SELECT adres_id as id, straat, huisnummer, postcode, woonplaats, reiziger_id
+        FROM adres
+        WHERE reiziger_id = #{id};
+    </select>
+
+    <select id="findById" parameterType="int" resultType="Adres.Adres">
+        SELECT adres_id as id, straat, huisnummer, postcode, woonplaats, reiziger_id
+        FROM adres
+        WHERE adres_id = #{id};
+    </select>
+
+    <select id="findAll" resultType="Adres.Adres">
+        SELECT adres_id as id, straat, huisnummer, postcode, woonplaats, reiziger_id
+        FROM adres;
+    </select>
+
+</mapper>

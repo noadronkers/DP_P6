@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Reiziger.ReizigerMapper">
+
+    <insert id="save" parameterType="Reiziger.Reiziger">
+        INSERT INTO reiziger (reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum)
+        VALUES (#{id}, #{voorletters}, #{tussenvoegsel}, #{achternaam}, #{geboortedatum});
+    </insert>
+
+    <update id="update" parameterType="Reiziger.Reiziger">
+        UPDATE reiziger
+        SET voorletters = #{voorletters},
+            tussenvoegsel = #{tussenvoegsel},
+            achternaam = #{achternaam},
+            geboortedatum = #{geboortedatum}
+        WHERE reiziger_id = #{id};
+    </update>
+
+    <delete id="delete" parameterType="Reiziger.Reiziger">
+        DELETE FROM reiziger WHERE reiziger_id = #{id};
+    </delete>
+
+    <select id="findById" parameterType="int" resultType="Reiziger.Reiziger">
+        SELECT reiziger_id as id, voorletters, tussenvoegsel, achternaam, geboortedatum
+        FROM reiziger
+        WHERE reiziger_id = #{id};
+    </select>
+
+    <select id="findByGbdatum" parameterType="java.sql.Date" resultType="Reiziger.Reiziger">
+        SELECT reiziger_id as id, voorletters, tussenvoegsel, achternaam, geboortedatum
+        FROM reiziger
+        WHERE geboortedatum = #{date};
+    </select>
+
+    <select id="findAll" resultType="Reiziger.Reiziger">
+        SELECT reiziger_id as id, voorletters, tussenvoegsel, achternaam, geboortedatum
+        FROM reiziger;
+    </select>
+
+</mapper>
