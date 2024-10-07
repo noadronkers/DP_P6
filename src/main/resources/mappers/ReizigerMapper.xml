@@ -23,21 +23,58 @@
         DELETE FROM reiziger WHERE reiziger_id = #{id};
     </delete>
 
-    <select id="findById" parameterType="int" resultType="Reiziger.Reiziger">
-        SELECT reiziger_id as id, voorletters, tussenvoegsel, achternaam, geboortedatum
-        FROM reiziger
-        WHERE reiziger_id = #{id};
+    <select id="findById" parameterType="int" resultMap="ReizigerWithAdresResultMap">
+        SELECT r.reiziger_id AS id,
+               r.voorletters,
+               r.tussenvoegsel,
+               r.achternaam,
+               r.geboortedatum,
+               a.adres_id AS adres_id,
+               a.postcode,
+               a.huisnummer,
+               a.straat,
+               a.woonplaats
+        FROM reiziger r
+                 LEFT JOIN adres a ON r.reiziger_id = a.reiziger_id
+        WHERE r.reiziger_id = #{id};
+    </select>
+
+    <select id="findAll" resultMap="ReizigerWithAdresResultMap">
+        SELECT r.reiziger_id AS id,
+               r.voorletters,
+               r.tussenvoegsel,
+               r.achternaam,
+               r.geboortedatum,
+               a.adres_id AS adres_id,
+               a.postcode,
+               a.huisnummer,
+               a.straat,
+               a.woonplaats
+        FROM reiziger r
+                 LEFT JOIN adres a ON r.reiziger_id = a.reiziger_id;
     </select>
 
     <select id="findByGbdatum" parameterType="java.sql.Date" resultType="Reiziger.Reiziger">
-        SELECT reiziger_id as id, voorletters, tussenvoegsel, achternaam, geboortedatum
+        SELECT reiziger_id AS id, voorletters, tussenvoegsel, achternaam, geboortedatum
         FROM reiziger
         WHERE geboortedatum = #{date};
     </select>
 
-    <select id="findAll" resultType="Reiziger.Reiziger">
-        SELECT reiziger_id as id, voorletters, tussenvoegsel, achternaam, geboortedatum
-        FROM reiziger;
-    </select>
+    <!-- Result Map for Reiziger with a single Adres -->
+    <resultMap id="ReizigerWithAdresResultMap" type="Reiziger.Reiziger">
+        <id property="id" column="id"/>
+        <result property="voorletters" column="voorletters"/>
+        <result property="tussenvoegsel" column="tussenvoegsel"/>
+        <result property="achternaam" column="achternaam"/>
+        <result property="geboortedatum" column="geboortedatum"/>
+
+        <association property="adres" javaType="Adres.Adres">
+            <id property="id" column="adres_id"/>
+            <result property="straat" column="straat"/>
+            <result property="huisnummer" column="huisnummer"/>
+            <result property="postcode" column="postcode"/>
+            <result property="woonplaats" column="woonplaats"/>
+        </association>
+    </resultMap>
 
 </mapper>

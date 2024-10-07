@@ -12,6 +12,4 @@ public interface AdresMapper {
     List<Adres> findByReiziger(Reiziger reiziger);
     Adres findById(int id);
     List<Adres> findAll();
-    void setReizigerDAO(ReizigerMapper rdao);
-
 }

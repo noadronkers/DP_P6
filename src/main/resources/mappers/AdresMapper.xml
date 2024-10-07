@@ -24,21 +24,31 @@
         DELETE FROM adres WHERE adres_id = #{id};
     </delete>
 
-    <select id="findByReiziger" parameterType="Reiziger.Reiziger" resultType="Adres.Adres">
-        SELECT adres_id as id, straat, huisnummer, postcode, woonplaats, reiziger_id
+    <select id="findByReiziger" parameterType="Reiziger.Reiziger" resultMap="AdresResultMap">
+        SELECT adres_id AS id, straat, huisnummer, postcode, woonplaats, reiziger_id
         FROM adres
         WHERE reiziger_id = #{id};
     </select>
 
-    <select id="findById" parameterType="int" resultType="Adres.Adres">
-        SELECT adres_id as id, straat, huisnummer, postcode, woonplaats, reiziger_id
+    <select id="findById" parameterType="int" resultMap="AdresResultMap">
+        SELECT adres_id AS id, straat, huisnummer, postcode, woonplaats, reiziger_id
         FROM adres
         WHERE adres_id = #{id};
     </select>
 
-    <select id="findAll" resultType="Adres.Adres">
-        SELECT adres_id as id, straat, huisnummer, postcode, woonplaats, reiziger_id
+    <select id="findAll" resultMap="AdresResultMap">
+        SELECT adres_id AS id, straat, huisnummer, postcode, woonplaats, reiziger_id
         FROM adres;
     </select>
+
+    <!-- Result Map for Adres -->
+    <resultMap id="AdresResultMap" type="Adres.Adres">
+        <id property="id" column="id"/>
+        <result property="straat" column="straat"/>
+        <result property="huisnummer" column="huisnummer"/>
+        <result property="postcode" column="postcode"/>
+        <result property="woonplaats" column="woonplaats"/>
+        <association property="reiziger" column="reiziger_id" select="Reiziger.ReizigerMapper.findById"/>
+    </resultMap>
 
 </mapper>
