@@ -5,6 +5,23 @@
 
 <mapper namespace="Reiziger.ReizigerMapper">
 
+    <!-- Result Map for Reiziger with a single Adres -->
+    <resultMap id="ReizigerWithAdresResultMap" type="Reiziger.Reiziger">
+        <id property="id" column="id"/>
+        <result property="voorletters" column="voorletters"/>
+        <result property="tussenvoegsel" column="tussenvoegsel"/>
+        <result property="achternaam" column="achternaam"/>
+        <result property="geboortedatum" column="geboortedatum"/>
+
+        <association property="adres" javaType="Adres.Adres">
+            <id property="id" column="adres_id"/>
+            <result property="straat" column="straat"/>
+            <result property="huisnummer" column="huisnummer"/>
+            <result property="postcode" column="postcode"/>
+            <result property="woonplaats" column="woonplaats"/>
+        </association>
+    </resultMap>
+
     <insert id="save" parameterType="Reiziger.Reiziger">
         INSERT INTO reiziger (reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum)
         VALUES (#{id}, #{voorletters}, #{tussenvoegsel}, #{achternaam}, #{geboortedatum});
@@ -59,22 +76,4 @@
         FROM reiziger
         WHERE geboortedatum = #{date};
     </select>
-
-    <!-- Result Map for Reiziger with a single Adres -->
-    <resultMap id="ReizigerWithAdresResultMap" type="Reiziger.Reiziger">
-        <id property="id" column="id"/>
-        <result property="voorletters" column="voorletters"/>
-        <result property="tussenvoegsel" column="tussenvoegsel"/>
-        <result property="achternaam" column="achternaam"/>
-        <result property="geboortedatum" column="geboortedatum"/>
-
-        <association property="adres" javaType="Adres.Adres">
-            <id property="id" column="adres_id"/>
-            <result property="straat" column="straat"/>
-            <result property="huisnummer" column="huisnummer"/>
-            <result property="postcode" column="postcode"/>
-            <result property="woonplaats" column="woonplaats"/>
-        </association>
-    </resultMap>
-
 </mapper>

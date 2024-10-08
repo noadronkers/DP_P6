@@ -5,6 +5,16 @@
 
 <mapper namespace="Adres.AdresMapper">
 
+    <!-- Result Map for Adres -->
+    <resultMap id="AdresResultMap" type="Adres.Adres">
+        <id property="id" column="id"/>
+        <result property="straat" column="straat"/>
+        <result property="huisnummer" column="huisnummer"/>
+        <result property="postcode" column="postcode"/>
+        <result property="woonplaats" column="woonplaats"/>
+        <association property="reiziger" column="reiziger_id" select="Reiziger.ReizigerMapper.findById"/>
+    </resultMap>
+
     <insert id="save" parameterType="Adres.Adres">
         INSERT INTO adres (adres_id, straat, huisnummer, postcode, woonplaats, reiziger_id)
         VALUES (#{id}, #{straat}, #{huisnummer}, #{postcode}, #{woonplaats}, #{reiziger.id});
@@ -40,15 +50,4 @@
         SELECT adres_id AS id, straat, huisnummer, postcode, woonplaats, reiziger_id
         FROM adres;
     </select>
-
-    <!-- Result Map for Adres -->
-    <resultMap id="AdresResultMap" type="Adres.Adres">
-        <id property="id" column="id"/>
-        <result property="straat" column="straat"/>
-        <result property="huisnummer" column="huisnummer"/>
-        <result property="postcode" column="postcode"/>
-        <result property="woonplaats" column="woonplaats"/>
-        <association property="reiziger" column="reiziger_id" select="Reiziger.ReizigerMapper.findById"/>
-    </resultMap>
-
 </mapper>

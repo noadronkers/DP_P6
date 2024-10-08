@@ -1,9 +1,12 @@
 package Reiziger;
 
 import Adres.Adres;
+import OVChipkaart.OVChipkaart;
 
 import java.text.SimpleDateFormat;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Reiziger {
     private int id;
@@ -12,6 +15,7 @@ public class Reiziger {
     private String achternaam;
     private Date geboortedatum;
     private Adres adres;
+    private List<OVChipkaart> ovChipkaarten;
 
     public Reiziger(int id, String voorletters, String tussenvoegsel, String achternaam, Date geboortedatum, Adres adres) {
         this.id = id;
@@ -20,9 +24,12 @@ public class Reiziger {
         this.achternaam = achternaam;
         this.geboortedatum = geboortedatum;
         this.adres = null;
+        this.ovChipkaarten = new ArrayList<>();
     }
 
-    public Reiziger() {}
+    public Reiziger() {
+        this.ovChipkaarten = new ArrayList<>();
+    }
 
     public int getId() {
         return id;
@@ -72,18 +79,35 @@ public class Reiziger {
         this.adres = adres;
     }
 
+    public List<OVChipkaart> getOvChipkaarten() {
+        return ovChipkaarten;
+    }
+
+    public void setOvChipkaarten(List<OVChipkaart> ovChipkaarten) {
+        this.ovChipkaarten = ovChipkaarten;
+    }
+
+
     @Override
     public String toString() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String formattedDate = dateFormat.format(geboortedatum);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Reiziger:\n")
+                .append("  ID: ").append(id).append("\n")
+                .append("  Voorletters: ").append(voorletters).append("\n")
+                .append("  Tussenvoegsel: ").append(tussenvoegsel).append("\n")
+                .append("  Achternaam: ").append(achternaam).append("\n")
+                .append("  Geboortedatum: ").append(geboortedatum).append("\n")
+                .append("  Adres: ").append(adres != null ? adres.toString() : "Geen adres").append("\n")
+                .append("  OV-chipkaarten:").append("\n");
 
-        return "Reiziger{" +
-                "id=" + id +
-                ", voorletters='" + voorletters + '\'' +
-                ", tussenvoegsel='" + (tussenvoegsel != null ? tussenvoegsel : "") + '\'' +
-                ", achternaam='" + achternaam + '\'' +
-                ", geboortedatum=" + formattedDate +
-                ", adres=" + (adres != null ? adres.toString() : "null") +
-                '}';
+        if (ovChipkaarten.isEmpty()) {
+            sb.append("    Geen OV-chipkaarten\n");
+        } else {
+            for (OVChipkaart ovChipkaart : ovChipkaarten) {
+                sb.append("    ").append(ovChipkaart.toString()).append("\n");
+            }
+        }
+
+        return sb.toString();
     }
 }

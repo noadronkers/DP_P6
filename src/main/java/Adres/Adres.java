@@ -19,7 +19,8 @@ public class Adres {
         this.reiziger = reiziger;
     }
 
-    public Adres() {}
+    public Adres() {
+    }
 
     public int getId() {
         return id;
@@ -71,13 +72,13 @@ public class Adres {
 
     @Override
     public String toString() {
-        return "Adres{" +
-                "id=" + id +
-                ", straat='" + straat + '\'' +
-                ", huisnummer=" + huisnummer +
-                ", postcode='" + postcode + '\'' +
-                ", woonplaats='" + woonplaats + '\'' +
-                ", reiziger=" + (reiziger != null ? "Reiziger{id=" + reiziger.getId() + ", naam=" + reiziger.getVoorletters() + " " + reiziger.getAchternaam() + "}" : "Geen reiziger") +
-                '}';
+        return "Adres:\n" +
+                "  ID: " + id + "\n" +
+                "  Straat: " + straat + "\n" +
+                "  Huisnummer: " + huisnummer + "\n" +
+                "  Postcode: " + postcode + "\n" +
+                "  Woonplaats: " + woonplaats + "\n" +
+                "  Reiziger: " + (reiziger != null ? reiziger.getVoorletters() + " " + reiziger.getAchternaam() : "Geen reiziger") +
+                "\n";
     }
 }

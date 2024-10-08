@@ -1,43 +1,47 @@
-<!--<?xml version="1.0" encoding="UTF-8" ?>-->
-<!--<!DOCTYPE mapper-->
-<!--        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
-<!--        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--<mapper namespace="OVChipkaart.OVChipkaartMapper">-->
+<mapper namespace="OVChipkaart.OVChipkaartMapper">
 
-<!--    <insert id="save" parameterType="OVChipkaart.OVChipkaart">-->
-<!--        INSERT INTO ov_chipkaart (kaart_nummer, klasse, saldo, is_gelocked, reiziger_id)-->
-<!--        VALUES (#{id}, #{klasse}, #{saldo}, #{isGelockt}, #{reiziger.id});-->
-<!--    </insert>-->
+    <!-- Result Map for OVChipkaart -->
+    <resultMap id="OVChipkaartResult" type="OVChipkaart.OVChipkaart">
+        <id property="kaartNummer" column="kaart_nummer" />
+        <result property="geldigTot" column="geldig_tot" />
+        <result property="klasse" column="klasse" />
+        <result property="saldo" column="saldo" />
+        <association property="reiziger" column="reiziger_id" select="Reiziger.ReizigerMapper.findById"/>
+    </resultMap>
 
-<!--    <update id="update" parameterType="OVChipkaart.OVChipkaart">-->
-<!--        UPDATE ov_chipkaart-->
-<!--        SET klasse = #{klasse},-->
-<!--            saldo = #{saldo},-->
-<!--            is_gelocked = #{isGelockt},-->
-<!--            reiziger_id = #{reiziger.id}-->
-<!--        WHERE kaart_nummer = #{id};-->
-<!--    </update>-->
+    <insert id="save" parameterType="OVChipkaart.OVChipkaart">
+        INSERT INTO ov_chipkaart (kaart_nummer, geldig_tot, klasse, saldo, reiziger_id)
+        VALUES (#{kaartNummer}, #{geldigTot}, #{klasse}, #{saldo}, #{reiziger.id});
+    </insert>
 
-<!--    <delete id="delete" parameterType="OVChipkaart.OVChipkaart">-->
-<!--        DELETE FROM ov_chipkaart WHERE kaart_nummer = #{id};-->
-<!--    </delete>-->
+    <update id="update" parameterType="OVChipkaart.OVChipkaart">
+        UPDATE ov_chipkaart
+        SET geldig_tot = #{geldigTot},
+        klasse = #{klasse},
+        saldo = #{saldo},
+        reiziger_id = #{reiziger.id}
+        WHERE kaart_nummer = #{kaartNummer};
+    </update>
 
-<!--    <select id="findById" parameterType="int" resultType="OVChipkaart.OVChipkaart">-->
-<!--        SELECT kaart_nummer as id, klasse, saldo, is_gelocked, reiziger_id-->
-<!--        FROM ov_chipkaart-->
-<!--        WHERE kaart_nummer = #{id};-->
-<!--    </select>-->
+    <delete id="delete" parameterType="int">
+        DELETE FROM ov_chipkaart WHERE kaart_nummer = #{kaartNummer};
+    </delete>
 
-<!--    <select id="findByReiziger" parameterType="Reiziger.Reiziger" resultType="OVChipkaart.OVChipkaart">-->
-<!--        SELECT kaart_nummer as id, klasse, saldo, is_gelocked, reiziger_id-->
-<!--        FROM ov_chipkaart-->
-<!--        WHERE reiziger_id = #{id};-->
-<!--    </select>-->
+    <select id="findById" parameterType="int" resultMap="OVChipkaartResult">
+        SELECT * FROM ov_chipkaart WHERE kaart_nummer = #{kaartNummer};
+    </select>
 
-<!--    <select id="findAll" resultType="OVChipkaart.OVChipkaart">-->
-<!--        SELECT kaart_nummer as id, klasse, saldo, is_gelocked, reiziger_id-->
-<!--        FROM ov_chipkaart;-->
-<!--    </select>-->
+    <select id="findByReiziger" parameterType="Reiziger.Reiziger" resultMap="OVChipkaartResult">
+        SELECT * FROM ov_chipkaart WHERE reiziger_id = #{id};
+    </select>
 
-<!--</mapper>-->
+    <select id="findAll" resultMap="OVChipkaartResult">
+        SELECT * FROM ov_chipkaart;
+    </select>
+
+</mapper>

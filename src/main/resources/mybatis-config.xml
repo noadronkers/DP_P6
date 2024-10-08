@@ -17,6 +17,6 @@
         <mappers>
                 <mapper resource="mappers/ReizigerMapper.xml"/>
                 <mapper resource="mappers/AdresMapper.xml"/>
-<!--                <mapper resource="mappers/OVChipkaartMapper.xml"/>-->
+                <mapper resource="mappers/OVChipkaartMapper.xml"/>
         </mappers>
 </configuration>
