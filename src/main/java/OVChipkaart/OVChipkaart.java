@@ -99,14 +99,17 @@ public class OVChipkaart {
         stringBuilder.append("  Kaartnummer: ").append(kaartNummer).append("\n")
                 .append("  Geldig tot: ").append(formattedDate).append("\n")
                 .append("  Klasse: ").append(klasse).append("\n")
-                .append("  Saldo: ").append(saldo).append("\n")
+                .append("  Saldo: €").append(String.format("%.2f", saldo)).append("\n")
                 .append("  Producten:").append("\n");
 
         if (producten.isEmpty()) {
             stringBuilder.append("    Geen producten\n");
         } else {
             for (Product product : producten) {
-                stringBuilder.append("    ").append(product.toString()).append("\n");
+                stringBuilder.append("      Product Nummer: ").append(product.getProduct_nummer()).append("\n")
+                        .append("      Naam: ").append(product.getNaam()).append("\n")
+                        .append("      Beschrijving: ").append(product.getBeschrijving()).append("\n")
+                        .append("      Prijs: €").append(String.format("%.2f", product.getPrijs())).append("\n");
             }
         }
 

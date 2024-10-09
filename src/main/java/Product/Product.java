@@ -67,12 +67,12 @@ public class Product {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Product Details:\n");
-        stringBuilder.append("  Product Nummer: ").append(product_nummer).append("\n");
-        stringBuilder.append("  Naam: ").append(naam).append("\n");
-        stringBuilder.append("  Beschrijving: ").append(beschrijving).append("\n");
-        stringBuilder.append("  Prijs: €").append(String.format("%.2f", prijs)).append("\n");
-        stringBuilder.append("  OV Chipkaarten: ").append(ovChipkaarten.isEmpty() ? "Geen" : ovChipkaarten).append("\n");
+        stringBuilder.append("Product Details:\n")
+                .append("  Product Nummer: ").append(product_nummer).append("\n")
+                .append("  Naam: ").append(naam).append("\n")
+                .append("  Beschrijving: ").append(beschrijving).append("\n")
+                .append("  Prijs: €").append(String.format("%.2f", prijs)).append("\n")
+                .append("  OV Chipkaarten: ").append(ovChipkaarten.isEmpty() ? "Geen" : ovChipkaarten.toString()).append("\n");
         return stringBuilder.toString();
     }
 }

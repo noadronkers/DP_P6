@@ -11,6 +11,7 @@
         <result property="klasse" column="klasse" />
         <result property="saldo" column="saldo" />
         <association property="reiziger" column="reiziger_id" select="Reiziger.ReizigerMapper.findById"/>
+        <collection property="producten" ofType="Product.Product" select="Product.ProductMapper.findByOVChipkaart" column="kaart_nummer"/>
     </resultMap>
 
     <insert id="save" parameterType="OVChipkaart.OVChipkaart">
