@@ -72,13 +72,20 @@ public class Adres {
 
     @Override
     public String toString() {
-        return "Adres:\n" +
-                "  ID: " + id + "\n" +
-                "  Straat: " + straat + "\n" +
-                "  Huisnummer: " + huisnummer + "\n" +
-                "  Postcode: " + postcode + "\n" +
-                "  Woonplaats: " + woonplaats + "\n" +
-                "  Reiziger: " + (reiziger != null ? reiziger.getVoorletters() + " " + reiziger.getAchternaam() : "Geen reiziger") +
-                "\n";
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("  ID: ").append(id).append("\n")
+                .append("    Straat: ").append(straat).append("\n")
+                .append("    Huisnummer: ").append(huisnummer).append("\n")
+                .append("    Postcode: ").append(postcode).append("\n")
+                .append("    Woonplaats: ").append(woonplaats).append("\n");
+
+        if (reiziger != null) {
+            stringBuilder.append("    Reiziger: ")
+                    .append(reiziger.getVoorletters()).append(" ")
+                    .append(reiziger.getAchternaam()).append("\n");
+        }
+
+        return stringBuilder.toString();
     }
 }

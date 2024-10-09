@@ -5,7 +5,6 @@
 
 <mapper namespace="OVChipkaart.OVChipkaartMapper">
 
-    <!-- Result Map for OVChipkaart -->
     <resultMap id="OVChipkaartResult" type="OVChipkaart.OVChipkaart">
         <id property="kaartNummer" column="kaart_nummer" />
         <result property="geldigTot" column="geldig_tot" />

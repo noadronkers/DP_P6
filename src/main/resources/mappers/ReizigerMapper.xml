@@ -5,8 +5,7 @@
 
 <mapper namespace="Reiziger.ReizigerMapper">
 
-    <!-- Result Map for Reiziger with a single Adres -->
-    <resultMap id="ReizigerWithAdresResultMap" type="Reiziger.Reiziger">
+    <resultMap id="ReizigerWithAdresAndOVChipkaartResultMap" type="Reiziger.Reiziger">
         <id property="id" column="id"/>
         <result property="voorletters" column="voorletters"/>
         <result property="tussenvoegsel" column="tussenvoegsel"/>
@@ -20,6 +19,13 @@
             <result property="postcode" column="postcode"/>
             <result property="woonplaats" column="woonplaats"/>
         </association>
+
+        <collection property="ovChipkaarten" ofType="OVChipkaart.OVChipkaart">
+            <id property="kaartNummer" column="kaart_nummer"/>
+            <result property="geldigTot" column="geldig_tot"/>
+            <result property="klasse" column="klasse"/>
+            <result property="saldo" column="saldo"/>
+        </collection>
     </resultMap>
 
     <insert id="save" parameterType="Reiziger.Reiziger">
@@ -40,7 +46,7 @@
         DELETE FROM reiziger WHERE reiziger_id = #{id};
     </delete>
 
-    <select id="findById" parameterType="int" resultMap="ReizigerWithAdresResultMap">
+    <select id="findById" parameterType="int" resultMap="ReizigerWithAdresAndOVChipkaartResultMap">
         SELECT r.reiziger_id AS id,
                r.voorletters,
                r.tussenvoegsel,
@@ -50,13 +56,19 @@
                a.postcode,
                a.huisnummer,
                a.straat,
-               a.woonplaats
+               a.woonplaats,
+               o.kaart_nummer AS kaart_nummer,
+               o.geldig_tot AS geldig_tot,
+               o.klasse AS klasse,
+               o.saldo AS saldo,
+               o.reiziger_id AS reiziger_id
         FROM reiziger r
                  LEFT JOIN adres a ON r.reiziger_id = a.reiziger_id
+                 LEFT JOIN ov_chipkaart o ON r.reiziger_id = o.reiziger_id
         WHERE r.reiziger_id = #{id};
     </select>
 
-    <select id="findAll" resultMap="ReizigerWithAdresResultMap">
+    <select id="findAll" resultMap="ReizigerWithAdresAndOVChipkaartResultMap">
         SELECT r.reiziger_id AS id,
                r.voorletters,
                r.tussenvoegsel,
@@ -66,9 +78,15 @@
                a.postcode,
                a.huisnummer,
                a.straat,
-               a.woonplaats
+               a.woonplaats,
+               o.kaart_nummer AS kaart_nummer,
+               o.geldig_tot AS geldig_tot,
+               o.klasse AS klasse,
+               o.saldo AS saldo,
+               o.reiziger_id AS reiziger_id
         FROM reiziger r
-                 LEFT JOIN adres a ON r.reiziger_id = a.reiziger_id;
+                 LEFT JOIN adres a ON r.reiziger_id = a.reiziger_id
+                 LEFT JOIN ov_chipkaart o ON r.reiziger_id = o.reiziger_id;
     </select>
 
     <select id="findByGbdatum" parameterType="java.sql.Date" resultType="Reiziger.Reiziger">

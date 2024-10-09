@@ -5,7 +5,6 @@
 
 <mapper namespace="Adres.AdresMapper">
 
-    <!-- Result Map for Adres -->
     <resultMap id="AdresResultMap" type="Adres.Adres">
         <id property="id" column="id"/>
         <result property="straat" column="straat"/>

@@ -4,6 +4,8 @@ import Adres.AdresMapper;
 import Adres.Adres;
 import OVChipkaart.OVChipkaartMapper;
 import OVChipkaart.OVChipkaart;
+import Product.ProductMapper;
+import Product.Product;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -32,6 +34,7 @@ public class Main {
                 ReizigerMapper reizigerMapper = session.getMapper(ReizigerMapper.class);
                 AdresMapper adresMapper = session.getMapper(AdresMapper.class);
                 OVChipkaartMapper ovChipkaartMapper = session.getMapper(OVChipkaartMapper.class);
+                ProductMapper productMapper = session.getMapper(ProductMapper.class);
 
                 // Test saving a new Reiziger
                 System.out.println("Testing for saving a new reiziger...");
@@ -39,7 +42,7 @@ public class Main {
                 boolean saveReizigerResult = reizigerMapper.save(newReiziger);
                 session.commit(); // Commit transaction
                 System.out.println("Save operation result (Reiziger): " + saveReizigerResult);
-                System.out.println("Saved reiziger: " + newReiziger);
+                System.out.println("Saved reiziger: \n" + newReiziger);
 
                 // Test saving a new Adres for Reiziger
                 System.out.println("Testing for saving a new adres for reiziger...");
@@ -47,7 +50,7 @@ public class Main {
                 boolean saveAdresResult = adresMapper.save(newAdres);
                 session.commit();
                 System.out.println("Save operation result (Adres): " + saveAdresResult);
-                System.out.println("Saved adres: " + newAdres);
+                System.out.println("Saved adres: \n" + newAdres);
 
                 // Test saving a new OVChipkaart for Reiziger
                 System.out.println("Testing for saving a new OVChipkaart for reiziger...");
@@ -55,7 +58,15 @@ public class Main {
                 boolean saveOVChipkaartResult = ovChipkaartMapper.save(newOVChipkaart);
                 session.commit();
                 System.out.println("Save operation result (OVChipkaart): " + saveOVChipkaartResult);
-                System.out.println("Saved OVChipkaart: " + newOVChipkaart);
+                System.out.println("Saved OVChipkaart: \n" + newOVChipkaart);
+
+                // Test saving a new Product
+                System.out.println("Testing for saving a new product...");
+                Product newProduct = new Product(400, "Product A", "Description for Product A", 29.99f);
+                boolean saveProductResult = productMapper.save(newProduct);
+                session.commit();
+                System.out.println("Save operation result (Product): " + saveProductResult);
+                System.out.println("Saved product: \n" + newProduct);
 
                 // Test updating a Reiziger
                 System.out.println("Testing for updating a reiziger...");
@@ -63,7 +74,7 @@ public class Main {
                 boolean updateReizigerResult = reizigerMapper.update(newReiziger);
                 session.commit();
                 System.out.println("Update operation result (Reiziger): " + updateReizigerResult);
-                System.out.println("Updated reiziger: " + newReiziger);
+                System.out.println("Updated reiziger: \n" + newReiziger);
 
                 // Test updating the Adres for Reiziger
                 System.out.println("Testing for updating the adres for reiziger...");
@@ -71,7 +82,7 @@ public class Main {
                 boolean updateAdresResult = adresMapper.update(newAdres);
                 session.commit();
                 System.out.println("Update operation result (Adres): " + updateAdresResult);
-                System.out.println("Updated adres: " + newAdres);
+                System.out.println("Updated adres: \n" + newAdres);
 
                 // Test updating the OVChipkaart for Reiziger
                 System.out.println("Testing for updating the OVChipkaart for reiziger...");
@@ -79,13 +90,21 @@ public class Main {
                 boolean updateOVChipkaartResult = ovChipkaartMapper.update(newOVChipkaart);
                 session.commit();
                 System.out.println("Update operation result (OVChipkaart): " + updateOVChipkaartResult);
-                System.out.println("Updated OVChipkaart: " + newOVChipkaart);
+                System.out.println("Updated OVChipkaart: \n" + newOVChipkaart);
+
+                // Test updating the Product
+                System.out.println("Testing for updating the product...");
+                newProduct.setPrijs(34.99f);
+                boolean updateProductResult = productMapper.update(newProduct);
+                session.commit();
+                System.out.println("Update operation result (Product): " + updateProductResult);
+                System.out.println("Updated product: \n" + newProduct);
 
                 // Test finding a Reiziger by ID
                 System.out.println("Testing for finding a reiziger by id...");
                 Reiziger reiziger = reizigerMapper.findById(100);
                 if (reiziger != null) {
-                    System.out.println("Reiziger found: " + reiziger);
+                    System.out.println("Reiziger found: \n" + reiziger);
                 } else {
                     System.out.println("No reiziger found with ID: 100");
                 }
@@ -94,7 +113,7 @@ public class Main {
                 System.out.println("Testing for finding the adres of a reiziger...");
                 List<Adres> foundAdressen = adresMapper.findByReiziger(newReiziger);
                 if (!foundAdressen.isEmpty()) {
-                    System.out.println("Adressen found for reiziger: " + foundAdressen);
+                    System.out.println("Adressen found for reiziger: \n" + foundAdressen);
                 } else {
                     System.out.println("No adres found for reiziger with ID: " + newReiziger.getId());
                 }
@@ -103,9 +122,17 @@ public class Main {
                 System.out.println("Testing for finding OVChipkaarten for a reiziger...");
                 List<OVChipkaart> foundOVChipkaarten = ovChipkaartMapper.findByReiziger(newReiziger);
                 if (!foundOVChipkaarten.isEmpty()) {
-                    System.out.println("OVChipkaarten found for reiziger: " + foundOVChipkaarten);
+                    System.out.println("OVChipkaarten found for reiziger: \n" + foundOVChipkaarten);
                 } else {
                     System.out.println("No OVChipkaart found for reiziger with ID: " + newReiziger.getId());
+                }
+
+                // Test finding all Products
+                System.out.println("Testing for finding all products...");
+                List<Product> products = productMapper.findAll();
+                System.out.println("Number of products found: " + products.size());
+                for (Product p : products) {
+                    System.out.println(p);
                 }
 
                 // Test finding all Reizigers
@@ -145,6 +172,13 @@ public class Main {
                 session.commit();
                 System.out.println("Delete operation result (OVChipkaart): " + deleteOVChipkaartResult);
                 System.out.println("OVChipkaart with ID " + newOVChipkaart.getKaartNummer() + " deleted successfully.");
+
+                // Test deleting the Product
+                System.out.println("Testing for deleting the product...");
+                boolean deleteProductResult = productMapper.delete(newProduct);
+                session.commit();
+                System.out.println("Delete operation result (Product): " + deleteProductResult);
+                System.out.println("Product with ID " + newProduct.getProduct_nummer() + " deleted successfully.");
 
                 // Test deleting the Reiziger
                 System.out.println("Testing for deleting the reiziger...");

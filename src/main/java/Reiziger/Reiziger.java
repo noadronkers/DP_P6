@@ -90,24 +90,38 @@ public class Reiziger {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Reiziger:\n")
-                .append("  ID: ").append(id).append("\n")
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("  ID: ").append(id).append("\n")
                 .append("  Voorletters: ").append(voorletters).append("\n")
                 .append("  Tussenvoegsel: ").append(tussenvoegsel).append("\n")
                 .append("  Achternaam: ").append(achternaam).append("\n")
-                .append("  Geboortedatum: ").append(geboortedatum).append("\n")
-                .append("  Adres: ").append(adres != null ? adres.toString() : "Geen adres").append("\n")
-                .append("  OV-chipkaarten:").append("\n");
+                .append("  Geboortedatum: ").append(geboortedatum).append("\n");
 
-        if (ovChipkaarten.isEmpty()) {
-            sb.append("    Geen OV-chipkaarten\n");
+        if (adres != null) {
+            stringBuilder.append("  Adres: ID: ").append(adres.getId()).append("\n")
+                    .append("    Straat: ").append(adres.getStraat()).append("\n")
+                    .append("    Huisnummer: ").append(adres.getHuisnummer()).append("\n")
+                    .append("    Postcode: ").append(adres.getPostCode()).append("\n")
+                    .append("    Woonplaats: ").append(adres.getWoonplaats()).append("\n");
         } else {
-            for (OVChipkaart ovChipkaart : ovChipkaarten) {
-                sb.append("    ").append(ovChipkaart.toString()).append("\n");
-            }
+            stringBuilder.append("  Adres: Geen adres\n");
         }
 
-        return sb.toString();
+        stringBuilder.append("  OV-chipkaarten:").append("\n");
+
+        if (!ovChipkaarten.isEmpty()) {
+            for (OVChipkaart ovChipkaart : ovChipkaarten) {
+                stringBuilder.append("    Kaartnummer: ").append(ovChipkaart.getKaartNummer()).append("\n")
+                        .append("    Geldig tot: ").append(ovChipkaart.getGeldigTot()).append("\n")
+                        .append("    Klasse: ").append(ovChipkaart.getKlasse()).append("\n")
+                        .append("    Saldo: ").append(ovChipkaart.getSaldo()).append("\n");
+            }
+        } else {
+            stringBuilder.append("    Geen OV-chipkaarten\n");
+        }
+
+        return stringBuilder.toString();
     }
+
+
 }

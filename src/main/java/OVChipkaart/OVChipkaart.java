@@ -1,9 +1,12 @@
 package OVChipkaart;
 
+import Product.Product;
 import Reiziger.Reiziger;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OVChipkaart {
     private int kaartNummer;
@@ -11,16 +14,20 @@ public class OVChipkaart {
     private int klasse;
     private float saldo;
     private Reiziger reiziger;
+    private List<Product> producten;
 
     public OVChipkaart(int kaartNummer, Date geldigTot, int klasse, float saldo, Reiziger reiziger) {
         this.kaartNummer = kaartNummer;
         this.geldigTot = geldigTot;
         this.klasse = klasse;
         this.saldo = saldo;
-        this.reiziger = reiziger;
+        setReiziger(reiziger);
+        this.producten = new ArrayList<>();
     }
 
-    public OVChipkaart() {}
+    public OVChipkaart() {
+        this.producten = new ArrayList<>();
+    }
 
     public int getKaartNummer() {
         return kaartNummer;
@@ -62,17 +69,47 @@ public class OVChipkaart {
         this.reiziger = reiziger;
     }
 
+    public List<Product> getProducten() {
+        return producten;
+    }
+
+    public void setProducten(List<Product> producten) {
+        this.producten = producten;
+    }
+
+    public void addProduct(Product product) {
+        if (!producten.contains(product)) {
+            producten.add(product);
+            product.addOVChipkaart(kaartNummer);
+        }
+    }
+
+    public void removeProduct(Product product) {
+        if (producten.remove(product)) {
+            product.removeOVChipkaart(kaartNummer);
+        }
+    }
+
     @Override
     public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = geldigTot != null ? dateFormat.format(geldigTot) : "onbekend";
 
-        return "OVChipkaart:\n" +
-                "  Kaartnummer: " + kaartNummer + "\n" +
-                "  Geldig tot: " + formattedDate + "\n" +
-                "  Klasse: " + klasse + "\n" +
-                "  Saldo: " + saldo + "\n" +
-                "  Reiziger: " + (reiziger != null ? reiziger.getId() + " (" + reiziger.getVoorletters() + " " + reiziger.getAchternaam() + ")" : "Geen reiziger") +
-                "\n";
+        stringBuilder.append("  Kaartnummer: ").append(kaartNummer).append("\n")
+                .append("  Geldig tot: ").append(formattedDate).append("\n")
+                .append("  Klasse: ").append(klasse).append("\n")
+                .append("  Saldo: ").append(saldo).append("\n")
+                .append("  Producten:").append("\n");
+
+        if (producten.isEmpty()) {
+            stringBuilder.append("    Geen producten\n");
+        } else {
+            for (Product product : producten) {
+                stringBuilder.append("    ").append(product.toString()).append("\n");
+            }
+        }
+
+        return stringBuilder.toString();
     }
 }
